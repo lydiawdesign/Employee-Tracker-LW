@@ -104,10 +104,9 @@ const addEmployee = () => {
             rolesArray.push(rows[i].title)
         }
         return rolesArray
-    })
+    });
 
     inquirer.prompt([
-     
         {
             name: "first_name",
             type: "input",
@@ -126,18 +125,11 @@ const addEmployee = () => {
         },
         {
             name: "manager_id",
-            type: "number",
+            type: "input",
             message: "What is the manager id for the employee?"
         },
     ]).then (function (response) {
-        connection.query("INSERT INTO employees SET (?)", 
-            {
-                first_name: response.first_name, 
-                last_name: response.last_name, 
-                role_id: response.role_id, 
-                manager_id: response.manager_id
-            },
-            (err) => {
+        connection.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [response.first_name, response.last_name, response.role_id, response.manager_id],(err) => {
             if (err) throw err;
             console.log("new employee was added!")
             init();
@@ -177,7 +169,7 @@ const addRole = () => {
             message: "What is the department id of the role?"
         },
     ]).then (function (response) {
-        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?)",[response.title, response.salary, response.department_id],(err) => {
+        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)",[response.title, response.salary, response.department_id],(err) => {
             if (err) throw err;
             console.log("new role was added!")
             init();

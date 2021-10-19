@@ -1,32 +1,30 @@
 // view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-const express = require('express');
+// const express = require('express');
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const consoleTable = require("console.table");
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// const app = express();
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
 
 // Connect to database
 const connection = mysql.createConnection(
   {
     host: 'localhost',
     port: 3306, 
-    user: process.env.DB_USER,
+    user: 'root',
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  },
+    database: 'company_db',
+  });
   connection.connect(function (err) {
       if (err) throw err;
       console.log(`Connected to the company_db database.`);
       init();
-  })
-
+  }
 );
+
 
 const init = () => {
     inquirer.prompt(
@@ -46,7 +44,7 @@ const init = () => {
             ]
         }
     )
-    .then((response) =>{
+    .then((response) => {
         switch (response.prompt){
         
         case 'View All Employees':
@@ -82,7 +80,10 @@ const init = () => {
 
 const viewEmployees = () => {
     console.log("you are viewing all the employees");
-    
+    connection.query("SELECT employee_id, first_name, last_name, role_id, manager_id FROM employees", (err, res) => {
+        if (err) throw err;
+        init();
+    });
 };
 
 const addEmployee = () => {
@@ -96,6 +97,10 @@ const updateEmployeeRole = () => {
 
 const viewRoles = () => {
     console.log("you are viewing all the roles");
+    connection.query("SELECT role_id, title, salary, department_id FROM roles", (err, res) => {
+        if (err) throw err;
+        init();
+    });
 };
 
 const addRole = () => {
@@ -105,7 +110,10 @@ const addRole = () => {
 
 const viewDepartments = () => {
     console.log("you are viewing all the departments");
-
+    connection.query("SELECT department_id, department_name FROM department", (err, res) => {
+        if (err) throw err;
+        init();
+    });
 };
 
 const addDepartment = () => {

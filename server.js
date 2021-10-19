@@ -87,7 +87,7 @@ const viewEmployees = () => {
     console.log("you are viewing all the employees");
     connection.query("SELECT * FROM employees", (err, res) => {
         if (err) throw err;
-        console.table('employees', res);
+        console.table(res);
         init();
     });
 };
@@ -95,6 +95,54 @@ const viewEmployees = () => {
 const addEmployee = () => {
     console.log("you are adding a new employee");
 
+    // to get the roles choices for inquirer below
+    const rolesArray = []
+    const rolesQuery = `SELECT * FROM roles`
+    connection.query(rolesQuery, (err, rows) => {
+        if(err) throw err
+        for(let i = 0; i<rows.length; i++){
+            rolesArray.push(rows[i].title)
+        }
+        return rolesArray
+    })
+
+    inquirer.prompt([
+     
+        {
+            name: "first_name",
+            type: "input",
+            message: "What is the first name of the employee?"
+        },
+        {
+            name: "last_name",
+            type: "input",
+            message: "What is the last name of the employee?"
+        },
+        {
+            name: "role_id",
+            type: "list",
+            message: "What is the role id for the employee?",
+            choices: rolesArray,
+        },
+        {
+            name: "manager_id",
+            type: "number",
+            message: "What is the manager id for the employee?"
+        },
+    ]).then (function (response) {
+        connection.query("INSERT INTO employees SET (?)", 
+            {
+                first_name: response.first_name, 
+                last_name: response.last_name, 
+                role_id: response.role_id, 
+                manager_id: response.manager_id
+            },
+            (err) => {
+            if (err) throw err;
+            console.log("new employee was added!")
+            init();
+        })
+    });
 };
 
 const updateEmployeeRole = () => {
@@ -105,7 +153,7 @@ const viewRoles = () => {
     console.log("you are viewing all the roles");
     connection.query("SELECT * FROM roles", (err, res) => {
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         init();
     });
 };
@@ -129,9 +177,9 @@ const addRole = () => {
             message: "What is the department id of the role?"
         },
     ]).then (function (response) {
-        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?)",[response.title, response.salary, response.department_id],(err, res) => {
+        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?)",[response.title, response.salary, response.department_id],(err) => {
             if (err) throw err;
-            console.log(response);
+            console.log("new role was added!")
             init();
         })
     });
@@ -141,7 +189,7 @@ const viewDepartments = () => {
     console.log("you are viewing all the departments");
     connection.query("SELECT * FROM departments", (err, res) => {
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         init();
     });
 };
@@ -152,11 +200,12 @@ const addDepartment = () => {
         {
             name: "department_name",
             type: "input",
-            message: "enter new department name",
+            message: "Please enter the new department name",
         }
     ).then (response => {
-        connection.query("INSERT INTO departments(department_name) VALUES (?)", response.department_name, (err) => {
+        connection.query("INSERT INTO departments (department_name) VALUES (?)", response.department_name, (err) => {
             if (err) throw err;
+            console.log("department was added!")
             init();
         });
     });

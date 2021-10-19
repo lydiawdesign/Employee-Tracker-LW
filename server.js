@@ -9,7 +9,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-
-app.listen(PORT, () => {
-    console.log(`Server running on port http://127.0.0.1:${PORT}`);
-  });
+const db = mysql.createConnection(
+    {
+        
+    }
+)

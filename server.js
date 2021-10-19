@@ -17,20 +17,20 @@ const connection = mysql.createConnection(
     user: 'root',
     password: process.env.DB_PASSWORD,
     database: 'company_db',
-  });
-  connection.connect(function (err) {
-      if (err) throw err;
-      console.log(`Connected to the company_db database.`);
-      init();
   }
 );
 
+connection.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected to the company_db database.");
+    init();
+});
 
 const init = () => {
     inquirer.prompt(
         {
+            name: 'prompts',
             type: 'list',
-            name: 'prompt',
             message: 'What would you like to do?',
             choices: [
                 'View All Employees',
@@ -45,7 +45,7 @@ const init = () => {
         }
     )
     .then((response) => {
-        switch (response.prompt){
+        switch (response.prompts){
         
         case 'View All Employees':
             viewEmployees();
@@ -58,18 +58,23 @@ const init = () => {
         case 'Update Employee Role':
             updateEmployeeRole()
             break;
+
         case 'View All Roles':
             viewRoles()
             break;
+
         case 'Add A Role':
             addRole()
             break;
+
         case 'View All Departments':
             viewDepartments()
             break;
+
         case 'Add A Department':
             addDepartment()
             break;
+
         case 'Quit':
             connection.end();
             break;
@@ -80,8 +85,9 @@ const init = () => {
 
 const viewEmployees = () => {
     console.log("you are viewing all the employees");
-    connection.query("SELECT employee_id, first_name, last_name, role_id, manager_id FROM employees", (err, res) => {
+    connection.query("SELECT * FROM employees", (err, res) => {
         if (err) throw err;
+        console.table('employees', res);
         init();
     });
 };
@@ -97,26 +103,61 @@ const updateEmployeeRole = () => {
 
 const viewRoles = () => {
     console.log("you are viewing all the roles");
-    connection.query("SELECT role_id, title, salary, department_id FROM roles", (err, res) => {
+    connection.query("SELECT * FROM roles", (err, res) => {
         if (err) throw err;
+        console.log(res);
         init();
     });
 };
 
 const addRole = () => {
     console.log("you are adding a new role");
-
+    inquirer.prompt([
+        {
+            name: "title",
+            type: "input",
+            message: "What is the title of the role?"
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "What is the salary of the role?"
+        },
+        {
+            name: "department_id",
+            type: "input",
+            message: "What is the department id of the role?"
+        },
+    ]).then (function (response) {
+        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?)",[response.title, response.salary, response.department_id],(err, res) => {
+            if (err) throw err;
+            console.log(response);
+            init();
+        })
+    });
 };
 
 const viewDepartments = () => {
     console.log("you are viewing all the departments");
-    connection.query("SELECT department_id, department_name FROM department", (err, res) => {
+    connection.query("SELECT * FROM departments", (err, res) => {
         if (err) throw err;
+        console.log(res);
         init();
     });
 };
 
 const addDepartment = () => {
     console.log("you are adding a new department");
-
-};
+    inquirer.prompt(
+        {
+            name: "department_name",
+            type: "input",
+            message: "enter new department name",
+        }
+    ).then (response => {
+        connection.query("INSERT INTO departments(department_name) VALUES (?)", response.department_name, (err) => {
+            if (err) throw err;
+            init();
+        });
+    });
+}

@@ -1,9 +1,5 @@
 #  Employee Tracker_LW
 
-## Links: 
-Walkthrough video link:
-repo link:
-
 ## Description:
 
 Developers frequently have to create interfaces that allow non-developers to easily view and interact with information stored in databases. These interfaces are called **content management systems (CMS)**. Your assignment this week is to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
@@ -48,7 +44,46 @@ THEN I am prompted to select an employee to update and their new role and this i
 ## Screenshots
 
 
+## Walkthrough Video: 
 
+
+
+## Technologies Used
+
+ - javascript 
+ - node.js
+ - npm inquirer
+ - mysql2
+ - console.table
+
+
+## Installation Instructions
+must install node.js, npm, inquirer, and mysql. 
+
+## Contact
+
+email: lydiawdesign@gmail.com
+
+Copyright (c) 2021 Lydia Williamson
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 

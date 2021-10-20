@@ -99,12 +99,13 @@ const addEmployee = () => {
     const rolesArray = []
     const rolesQuery = `SELECT * FROM roles`
     connection.query(rolesQuery, (err, rows) => {
-        if(err) throw err
+        if(err) throw err;
         for(let i = 0; i<rows.length; i++){
             rolesArray.push(rows[i].title)
         }
         return rolesArray
     });
+
 
     inquirer.prompt([
         {
@@ -126,10 +127,12 @@ const addEmployee = () => {
         {
             name: "manager_id",
             type: "input",
-            message: "What is the manager id for the employee?"
-        },
+            message: "What is the manager id for the employee?",
+            choices: ['lydia', 'noone'],
+        }
     ]).then (function (response) {
-        connection.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [response.first_name, response.last_name, response.role_id, response.manager_id],(err) => {
+        connection.query("INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [response.first_name, response.last_name, response.role_id, response.manager_id],
+        (err) => {
             if (err) throw err;
             console.log("new employee was added!")
             init();
@@ -139,6 +142,27 @@ const addEmployee = () => {
 
 const updateEmployeeRole = () => {
     console.log("you are updating an employee");
+   
+    inquirer.prompt([
+       {
+        name:'employee_id',
+        type:"list",
+        message: "Who is the employee that you would like to update?",
+        choices: ['come again soon, not working yet!']
+       },
+       {
+        name:'role_id',
+        type:"list",
+        message: "What role would you like to update for this employee?",
+        choices: ['come again soon, not working yet!']
+       },
+    ]).then(function(response) {
+        connection.query("UPDATE employees SET role_id = ? WHERE id =?", [response.employee_id, response.role_id],(err) => {
+            if (err) throw err;
+            console.log("new employee was added!")
+            init();
+        });
+    });
 };
 
 const viewRoles = () => {

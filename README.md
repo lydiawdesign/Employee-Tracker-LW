@@ -42,10 +42,13 @@ THEN I am prompted to select an employee to update and their new role and this i
 ```
 
 ## Screenshots
+![image](https://user-images.githubusercontent.com/87274229/138016428-57849a05-2743-4fa7-b129-2d430d548c20.png)
+![table screenshot](https://user-images.githubusercontent.com/87274229/138016440-8e25a409-87d2-4b99-bc1f-e40359999224.PNG)
+
 
 
 ## Walkthrough Video: 
-
+https://youtu.be/GkYiJTxLwC8
 
 
 ## Technologies Used
